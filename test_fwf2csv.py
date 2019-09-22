@@ -245,7 +245,38 @@ class TestFWF2CSV(unittest.TestCase):
         tc_10, config_10, file_name=file_name)
         self.assertTrue(os.path.exists(file_name))
 
+        
+    def test_E2E_csv(self):
+        tc_11 = {
+            'f1': ['ab','‘’','AAABBB_B'],# big cell
+            'f2': [12.3,123,True], # incompatible cell type
+            'f3': ['ef','EF','EFFF_FFF'],# big cell
+            'f4': ['gh','','GHGHGHGH'], # empty cell
+            'f5': ['Jânis','El Niño','résumé'],
+            'f6': ['kl','KL'], # missing cell
+            'f7': [10,12,20], # int to float
+            'f8': [12.3,1.23,2.8], # foat to int
+            'f9': ['qr','QR','QRqrQRqr'],
+            'f10': ['st','ST','STSTstST']
+        }
+        config_11 = {
+            'f1': {'length': 5, 'type': str, 'default_value': ''},
+            'f2': {'length': 12, 'type': str, 'default_value': ''},
+            'f3': {'length': 3, 'type': str, 'default_value': ''},
+            'f4': {'length': 2, 'type': str, 'default_value': ''},
+            'f5': {'length': 13, 'type': str, 'default_value': ''},
+            'f6': {'length': 7, 'type': str, 'default_value': ''},
+            'f7': {'length': 10, 'type': float, 'default_value': ''},
+            'f8': {'length': 13, 'type': int, 'default_value': ''},
+            'f9': {'length': 20, 'type': str, 'default_value': ''},
+            'f10': {'length': 13, 'type': str, 'default_value': ''}
+        }
 
+        tc_11_instance = FWF2CSV(tc_11,config_11)
+        FWF2CSV.fwf_2_csv(tc_11_instance, config_11, 
+        input_file = 'E2E_test_new_file.txt', output_file = 'E2E_test_new_utf8_file.csv', 
+        input_encoding = 'cp1252', output_encoding = 'utf-8')
+        self.assertTrue(os.path.exists('E2E_test_new_utf8_file.csv'))        
 
 
 
