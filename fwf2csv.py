@@ -121,6 +121,14 @@ class FWF2CSV:
         joined_line = self.joiner(chopped_line,delimiter)
         return joined_line
 
+    def fwf_2_csv(self, config, input_file = 'new_file.txt', output_file = 'new_utf8_file.csv', input_encoding = 'cp1252', output_encoding = 'utf-8'):
+        f_in = open(input_file,'r',encoding=input_encoding)
+        f_out = open(output_file,'w',encoding= output_encoding)
+        for line in f_in:
+            comma_joined_line = self.fwf_2_csv_line(line, config)
+            f_out.write(comma_joined_line)
+        f_in.close()
+        f_out.close()
 
     
 
